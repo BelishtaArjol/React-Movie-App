@@ -1,4 +1,6 @@
 # React Movie App - ReactJS Projects
+This web app is built with ReactJS and styled components.
+Must be said that I'm still working on this project and take it easy if you find some stuff that needs to be optimised and any little beautiful error.
 
 ![](movie.gif)
 
