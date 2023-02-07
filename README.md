@@ -14,10 +14,6 @@ Generate API key from : http://www.omdbapi.com/apikey.aspx
 * Search URL: `https://www.omdbapi.com/?s={MOVIE_NAME}&apikey={API_KEY}`
 * Movie Details URL: `https://www.omdbapi.com/?i={MOVIE_ID}&apikey={API_KEY}`
 
-### Icons & Font -
-* Icons: [ayushkul/react-movie-app](https://github.com/ayushkul/react-movie-app/tree/main/public/)
-* Font Link: `<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">`
-
 ### Libraries used
 * `styled-components`
 * `axios`
