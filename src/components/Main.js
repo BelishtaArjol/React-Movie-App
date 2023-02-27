@@ -3,7 +3,6 @@ import Axios from "axios";
 import styled from "styled-components";
 import MovieComponent from "./MovieComponent";
 import Pagination from "./Pagination";
-import { Watch } from "react-loader-spinner";
 
 const Container = styled.div`
   display: flex;
@@ -71,20 +70,28 @@ const MovieListContainer = styled.div`
 `;
 
 const Main = () => {
-  const [searchQuery, updateSearchQuery] = useState("");
   const [movies, setMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [moviesPerPage] = useState(10);
   const [searchParam] = useState(["title"]);
   const [filterParam, setFilterParam] = useState(["All"]);
+  const [searchQuery, updateSearchQuery] = useState("");
 
   useEffect(() => {
     Axios.get(
-      `https://imdb-api.com/API/AdvancedSearch/k_q6gyyd3m?groups=top_250&count=250`
-    ).then((response) => setMovies(response.data.results));
+      `https://imdb-api.com/API/AdvancedSearch/k_i03je5e9?groups=top_250&count=250`
+    )
+      .then((response) => {
+        // console.log(response.data.results);
+        setMovies(response.data.results);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
   }, []);
-
-  console.log(movies);
 
   const indexOfLastMovie = currentPage * moviesPerPage;
   const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
@@ -101,7 +108,7 @@ const Main = () => {
               .indexOf(searchQuery.toLowerCase()) > -1
           );
         });
-      } else if (filterParam === "All") {
+      } else if (filterParam == "All") {
         return searchParam.some((newItem) => {
           return (
             item[newItem]
@@ -128,6 +135,8 @@ const Main = () => {
             onChange={(e) => {
               setFilterParam(e.target.value);
             }}
+            className="custom-select"
+            aria-label="Filter Movies by genre"
           >
             <option value="All">All</option>
             <option value="Action">Action</option>
@@ -149,23 +158,23 @@ const Main = () => {
           />
         </SearchBox>
       </Header>
-      {movies ? (
-        <MovieListContainer>
-          {search(currentMovies).map((movie, index) => (
-            <MovieComponent key={index} movie={movie} />
-          ))}
-        </MovieListContainer>
-      ) : (
-        <Watch
-          height="80"
-          width="80"
-          radius="9"
-          color="green"
-          ariaLabel="Loading"
-          wrapperStyle
-          wrapperClass
-        />
-      )}
+      <div style={{ position: "relative" }}>
+        {isLoading ? (
+          <h1
+            style={{
+              position: "absolute",
+            }}
+          >
+            Loading Movies ...
+          </h1>
+        ) : (
+          <MovieListContainer>
+            {search(currentMovies).map((movie, index) => (
+              <MovieComponent key={index} movie={movie} />
+            ))}
+          </MovieListContainer>
+        )}
+      </div>
 
       <Pagination
         moviesPerPage={moviesPerPage}

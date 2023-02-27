@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { Watch } from "react-loader-spinner";
 
 const MovieContainer = styled.div`
   display: flex;
@@ -45,7 +44,7 @@ const MovieComponent = (props) => {
   return (
     <MovieContainer
       onClick={() => {
-        props.movie ? navigate(`/info/${id}`) : <Watch></Watch>;
+        navigate(`/info/${id}`);
         window.scrollTo({ top: 0, behavior: "smooth" });
       }}
     >

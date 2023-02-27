@@ -52,56 +52,78 @@ const MovieInfoComponent = (props) => {
   const { id } = useParams();
 
   const [movieInfo, setMovieInfo] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     Axios.get(
-      `https://imdb-api.com/API/AdvancedSearch/k_q6gyyd3m?groups=top_250&count=250`
-    ).then((response) => setMovieInfo(response.data.results));
+      `https://imdb-api.com/API/AdvancedSearch/k_i03je5e9?groups=top_250&count=250`
+    )
+      .then((response) => {
+        setMovieInfo(response.data.results);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
   }, []);
 
   const currentMovie = movieInfo?.find((movie) => movie.id === id);
 
   return (
-    <Container>
-      {currentMovie && (
-        <>
-          <CoverImage src={currentMovie?.image} alt={currentMovie?.title} />
-          <InfoColumn>
-            <MovieName>
-              <span>{currentMovie?.title}</span>
-            </MovieName>
-            <MovieInfo>
-              IMDB Rating: <span>{currentMovie?.imDbRating}</span>
-            </MovieInfo>
-            <MovieInfo>
-              IMDB Rating Votes: <span>{currentMovie?.imDbRatingVotes}</span>
-            </MovieInfo>
-            <MovieInfo>
-              Year: <span>{currentMovie?.description}</span>
-            </MovieInfo>
-            <MovieInfo>
-              Genre: <span>{currentMovie?.genres}</span>
-            </MovieInfo>
-            <MovieInfo>
-              Main Actors: <span>{currentMovie?.stars}</span>
-            </MovieInfo>
-            <MovieInfo>
-              Plot: <span>{currentMovie?.plot}</span>
-            </MovieInfo>
-            <MovieInfo>
-              <button
-                className="btn btn-link"
-                onClick={() => {
-                  navigate("/react-movie-app");
-                }}
-              >
-                Return to Homepage
-              </button>
-            </MovieInfo>
-          </InfoColumn>
-        </>
+    <div>
+      {isLoading ? (
+        <h1
+          style={{
+            position: "absolute",
+          }}
+        >
+          Loading Movie Details ...
+        </h1>
+      ) : (
+        <Container>
+          {currentMovie && (
+            <>
+              <CoverImage src={currentMovie?.image} alt={currentMovie?.title} />
+              <InfoColumn>
+                <MovieName>
+                  <span>{currentMovie?.title}</span>
+                </MovieName>
+                <MovieInfo>
+                  IMDB Rating: <span>{currentMovie?.imDbRating}</span>
+                </MovieInfo>
+                <MovieInfo>
+                  IMDB Rating Votes:{" "}
+                  <span>{currentMovie?.imDbRatingVotes}</span>
+                </MovieInfo>
+                <MovieInfo>
+                  Year: <span>{currentMovie?.description}</span>
+                </MovieInfo>
+                <MovieInfo>
+                  Genre: <span>{currentMovie?.genres}</span>
+                </MovieInfo>
+                <MovieInfo>
+                  Main Actors: <span>{currentMovie?.stars}</span>
+                </MovieInfo>
+                <MovieInfo>
+                  Plot: <span>{currentMovie?.plot}</span>
+                </MovieInfo>
+                <MovieInfo>
+                  <button
+                    className="btn btn-link"
+                    onClick={() => {
+                      navigate("/react-movie-app");
+                    }}
+                  >
+                    Return to Homepage
+                  </button>
+                </MovieInfo>
+              </InfoColumn>
+            </>
+          )}
+        </Container>
       )}
-    </Container>
+    </div>
   );
 };
 export default MovieInfoComponent;
