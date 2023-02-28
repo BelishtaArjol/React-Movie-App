@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
+// import Axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
-import Axios from "axios";
 import styled from "styled-components";
-// import { Loading } from 'react-admin';
 
 const Container = styled.div`
   display: flex;
@@ -47,28 +46,11 @@ const MovieInfo = styled.span`
   }
 `;
 
-const MovieInfoComponent = (props) => {
+const MovieInfoComponent = ({ movies, isLoading }) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [movieInfo, setMovieInfo] = useState();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    Axios.get(
-      `https://imdb-api.com/API/AdvancedSearch/k_i03je5e9?groups=top_250&count=250`
-    )
-      .then((response) => {
-        setMovieInfo(response.data.results);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-      });
-  }, []);
-
-  const currentMovie = movieInfo?.find((movie) => movie.id === id);
+  const currentMovie = movies?.find((movie) => movie.id === id);
 
   return (
     <div>

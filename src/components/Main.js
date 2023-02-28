@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import Axios from "axios";
+import React, { useState } from "react";
+// import Axios from "axios";
 import styled from "styled-components";
 import MovieComponent from "./MovieComponent";
 import Pagination from "./Pagination";
@@ -69,29 +69,12 @@ const MovieListContainer = styled.div`
   justify-content: space-evenly;
 `;
 
-const Main = () => {
-  const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+const Main = ({ movies, isLoading }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [moviesPerPage] = useState(10);
   const [searchParam] = useState(["title"]);
   const [filterParam, setFilterParam] = useState(["All"]);
   const [searchQuery, updateSearchQuery] = useState("");
-
-  useEffect(() => {
-    Axios.get(
-      `https://imdb-api.com/API/AdvancedSearch/k_i03je5e9?groups=top_250&count=250`
-    )
-      .then((response) => {
-        // console.log(response.data.results);
-        setMovies(response.data.results);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-      });
-  }, []);
 
   const indexOfLastMovie = currentPage * moviesPerPage;
   const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
